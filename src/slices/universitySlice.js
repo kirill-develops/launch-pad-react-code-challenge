@@ -14,7 +14,7 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
     }),
     getUni: builder.query({
       query: country => ({
-        url: `https://universities.hipolabs.com/search?country=${country}`,
+        url: `http://universities.hipolabs.com/search?country=${country}`,
       }),
       transformResponse: responseData => {
         const resConvert = responseData.slice()
@@ -24,7 +24,7 @@ export const extendedApiSlice = apiSlice.injectEndpoints({
           });
         return universityAdapter.setAll(initialState, resConvert)
       }
-    }) 
+    })
   })
 });
 
@@ -34,15 +34,14 @@ export const {
 
 export const { selectAll: getAllUniversity } = universityAdapter
   .getSelectors(state => {
-  let newObj = {};
+    let newObj = {};
 
-    for (const value of Object.values(state.api.queries)) { 
-    if (value?.endpointName === 'getUni'
-      && value?.status === 'fulfilled')
-    {
-      newObj = value.data;
+    for (const value of Object.values(state.api.queries)) {
+      if (value?.endpointName === 'getUni'
+        && value?.status === 'fulfilled') {
+        newObj = value.data;
+      }
     }
-  }
-  
+
     return !Object.values(newObj)[0] ? initialState : newObj;
-})
+  })
